@@ -1,0 +1,106 @@
+<html>
+  <head>
+      <title>My first Game</title>
+      <style>
+        canvas{
+          border: 1px solid orange;
+          background-color:green;
+        }
+      </style>
+  </head>
+
+  <body>
+    <!---HTML Canvas : Drawing board -->
+    <h1>Game </h1>
+    <canvas id="mycanvas" width="1000px" height="800px"> </canvas>
+
+    <script>
+        // Canvas + Pen
+        // Init the Game
+        var GameH = 800;
+        var GameW = 1000;
+        var game_over = false;
+        var canvas = document.getElementById("mycanvas");
+        var pen = canvas.getContext('2d');
+        var enemyImg = new Image;
+        enemyImg.src = "Assets/drowsy.png";
+        var playerImg = new Image;
+        playerImg.src = "Assets/pika.png";
+
+        var enemy = {
+          x : 500,
+          y : 150,
+          w : 100,
+          h : 100,
+          color : "red",
+          speed : 10,
+        }
+        var player = {
+          x : 100,
+          y : 450,
+          w : 100,
+          h : 100,
+          isMoving : false,
+          speed : 5,
+        }
+        // Create Event Listners (Detect some event like mousepress or keydown, and trigger some code)
+        canvas.addEventListener('mousedown',function(){
+            player.isMoving = true;
+        });
+        canvas.addEventListener('mouseup',function(){
+            player.isMoving = false;
+        });
+        // Helper Function to check Collisions
+        function isColliding(ob1, ob2){
+            // Logic for collision detection
+            var firstCond = Math.abs(ob1.x - ob2.x) <= ob1.w;
+            var secondCond = Math.abs(ob1.y - ob2.y) <= ob1.h;
+            return firstCond && secondCond;
+        }
+
+
+        // Draw something using the pen
+        function updateGame(){
+          //console.log("Inside Update");
+          enemy.y = enemy.y + enemy.speed;
+          if(enemy.y > GameH - enemy.h || enemy.y<=0){
+            enemy.speed = enemy.speed*-1;
+          }
+          if(player.isMoving){
+            player.x += player.speed;
+          }
+          if(isColliding(player,enemy)){
+            game_over = true;
+            alert("You lost!");
+          }
+          if(player.x > GameW - player.w){
+            alert("You won!");
+            game_over = true;
+          }
+        }
+        function drawGame(){
+          // clear the previous canvas
+          pen.clearRect(0,0,GameW, GameH);
+          //once
+          pen.fillStyle = enemy.color;
+          pen.drawImage(enemyImg, enemy.x,enemy.y,enemy.w,enemy.h)
+          pen.drawImage(playerImg, player.x,player.y,player.w,player.h);
+          //console.log("Inside Draw");
+
+        }
+
+        //Game Loop
+        function  render(){
+            updateGame();
+            drawGame();
+            console.log("In Render");
+            // Periodic Function 60 times in 1s
+            if(game_over==false){
+              window.requestAnimationFrame(render);
+            }
+        }
+        render();
+    </script>
+
+  </body>
+</html>
