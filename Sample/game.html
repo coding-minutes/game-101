@@ -1,0 +1,142 @@
+<html>
+    <head>
+        <title>PokeMon Game @ NSIT</title>
+        <style>
+            body{
+                background-color:gray;
+            }
+            canvas{
+                border:5px solid orange;
+                background: url('Assets/background.jpg');
+                background-size:cover;
+            }
+        
+        </style>
+    </head>
+    <body>
+        <p>PokeMon Game</p>
+        <canvas id='myCanvas' width="500px" height="400px">
+        </canvas>
+        
+        
+    <script>
+            
+    var canvas=document.getElementById('myCanvas');
+    var pen = canvas.getContext('2d');
+    var GAME_W = 500;
+    var GAME_H = 400;
+    var game_over = false;
+        
+    var enemy = {
+        x:150,
+        y:150,
+        w:60,
+        h:60,
+        speedY:5,  
+    }; 
+     var player = {
+        x:10,
+        y:200,
+        w:60,
+        h:60,
+        speedX:5,
+        isMoving:false,
+    };
+    var goal = {
+        x:GAME_W-100,
+        y:200,
+        w:60,
+        h:60,  
+    };
+    var playerImg = new Image;
+    playerImg.src = 'Assets/pika.png';
+    
+        
+    var enemyImg = new Image;
+    enemyImg.src = 'Assets/gengar.png';
+        
+    
+    var goalImg = new Image;
+    goalImg.src = 'Assets/ball.png';
+        
+    canvas.addEventListener('mousedown',function(){
+        //player.x += player.speedX;                    
+        player.isMoving =true;
+    });
+    canvas.addEventListener('mouseup',function(){
+        //player.x += player.speedX;                    
+        player.isMoving =false;
+    });
+    document.addEventListener('keydown',function(e){
+        console.log("You pressed ...");
+        
+        if(e.keyCode==37){
+            //Move Left    
+        }
+        if(e.keyCode==39){
+            //Move Right
+        }
+    });
+        
+    function isColliding(r1,r2){
+        var firstCond = Math.abs(r1.x - r2.x) <= 50;
+        var secondCond = Math.abs(r1.y - r2.y) <= 50;
+        
+        return firstCond && secondCond ? true:false;
+        
+    }
+    function update(){
+        enemy.y += enemy.speedY;
+        if(enemy.y>=GAME_H - enemy.h -10 || enemy.y <=10){
+            enemy.speedY *= -1;
+        }
+        if(player.isMoving==true){
+            player.x += player.speedX;
+        }
+        if(isColliding(player,enemy)){
+                alert("Game Over!");
+                game_over = true;
+        }
+        if(isColliding(player,goal)){
+                alert("You Won !");
+                game_over = true;
+        }
+        
+    }
+    
+    function draw(){
+        
+        pen.clearRect(0,0,GAME_W,GAME_H);
+        /*
+        pen.fillStyle = "orange";
+        pen.fillRect(enemy.x,enemy.y,enemy.w,enemy.h);
+        
+        pen.fillStyle = "green";
+        pen.fillRect(player.x,player.y,player.w,player.h);
+        
+        pen.fillStyle = "red";
+        pen.fillRect(goal.x,goal.y,goal.w,goal.h);
+        */
+      pen.drawImage(playerImg,player.x,player.y,player.w,player.h);
+        pen.drawImage(enemyImg,enemy.x,enemy.y,enemy.w,enemy.h);
+        pen.drawImage(goalImg,goal.x,goal.y,goal.w,goal.h);
+        
+    }
+    function render(){
+       console.log("In Render!");
+       draw();
+       update();
+        if(game_over==false){
+            window.requestAnimationFrame(render);
+        }   
+    }
+    render();
+    
+    </script>
+        
+    
+    
+    
+    
+    </body>
+</html>

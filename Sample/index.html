@@ -1,0 +1,67 @@
+<html>
+    <head>
+        <title>My First Game</title>
+        <style>
+                
+        </style>
+    </head>
+    
+    <body>
+        <script>
+        
+        var a = 10;
+        b = 20;
+            
+        var arr = [1,2,3];
+            
+        for(i=0;i<=5;i++){
+            arr.push(i);
+        }
+        arr.pop();
+            
+        console.log(arr);
+        
+        function fun(){
+            string = "Having Fun";
+            console.log(string);
+        }
+        fun();
+        
+        x = 5;
+        if(x>0){
+            console.log("Positive");
+        }
+        else{
+            console.log("Not Positive");
+        }
+        
+            car = {
+                model:"Audi 2016",
+                price:"25 Lac",
+                id:101,
+                seats:20,
+                milege:35,
+                drivers:["ABC","PQR"],
+                
+                startCar:function(){
+                    console.log("Grrrrr.....Printing"); 
+                    console.log(this.model);
+                },
+    
+            };
+            
+            //This creates an array for drivers key
+            car.drivers = ["ABC","XYZ"];
+            
+            car.drivers.push("Driver1");
+            car.drivers.push("Driver2");
+            
+            console.log(car);
+            car.startCar();
+        
+        </script>
+        
+    
+    
+    </body>
+</html>
